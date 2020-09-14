@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+#: Title	: luser-randompass
+#: Date 	: 2020-08-12
+#: Author	: "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version	: 1.0
+#: Description	: script generates a random password for each user specified on the command line
+
+# Display what the user typed on the command line.
+printf "executing $(basename ${0}) ...\n"
+
+# Display the path and filename of the script.
+printf "\n$# user(s) entered : generating random passwords\n\n"
+
+# Check argument was supplied
+if [[ "$#" -lt 1 ]]
+then
+    echo "Usage: $(basename ${0}) USER_NAME [USER_NAME]..."
+    exit 1
+fi
+
+# Generate and display a password for each parameter.
+for USER_NAME in "$@"
+do
+    PASSWORD=$(random-pass)
+    echo "${USER_NAME}: ${PASSWORD}"
+done

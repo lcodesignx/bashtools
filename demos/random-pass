@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+#: Title        : random-pass
+#: Date         : 2020-08-12
+#: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : Script generates a random password.
+
+# A better password
+PASSWORD=$(date +%s | shasum -a 256 | head -c48)
+SPECIAL_CHARACTER=$(echo '!@#$%^&*()_=+{}[]' | fold -w1 | shuf | head -n1)
+echo $PASSWORD$SPECIAL_CHARACTER
