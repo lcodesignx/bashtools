@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-#: Title        : luser-randompass
+#: Title        : fix-rpmdb
 #: Date         : 2020-08-12
 #: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
 #: Version      : 1.0
