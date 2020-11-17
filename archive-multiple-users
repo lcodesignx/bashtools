@@ -1,6 +1,12 @@
 #!/bin/bash
-
+#
+#: Title        : archive-multiple-users
+#: Date         : 2020-08-11
+#: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : script archives multiple users and locks their accounts
 # Script for archiving multiple users
+
 USER=$1
 
 printf "Executing script: ${0}\n"
