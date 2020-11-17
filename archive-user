@@ -2,8 +2,8 @@
 
 # Script archives a user
 
-echo "Executing script: $0"
-echo "Archiving user: $1"
+printf "Executing script: $0\n"
+printf "Archiving user: $1\n"
 
 # Lock the account
 passwd -l $1
