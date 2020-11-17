@@ -1,4 +1,10 @@
 #!/bin/bash
+#
+#: Title        : archive-user
+#: Date         : 2020-08-11
+#: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : script archives the user provided and locks the user account
 
 # Script prompts user for name to archive
 read -p "Enter a user name: " USER
