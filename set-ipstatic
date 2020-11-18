@@ -13,19 +13,30 @@ then
     exit 1
 fi
 
-# get network interface name
-NIC=$(nmcli conn show | sed -n 2p | cut -d' ' -f1)
+# get network interface name and protocol
+NIC=$(nmcli connection show | sed -n 2p | cut -d' ' -f1)
+PROTO=$(nmcli connection show id ${NIC} | grep -i ipv4.method)
 
-# get current ip address and subnet mask
-IPADDR=$(ip a | grep inet | grep -v inet6 | sed -n 2p | cut -d' ' -f6)
+if [[ ${PROTO} == "auto" ]]
+then
+    # get current ip address and subnet mask
+    IPADDR=$(ip a | grep inet | grep -v inet6 | sed -n 2p | cut -d' ' -f6)
 
-# get default gateway
-GW=$(ip route | sed -n 1p | cut -d' ' -f3)
+    # get default gateway
+    GW=$(ip route | sed -n 1p | cut -d' ' -f3)
 
-# change nic settings to static
-nmcli connection modify ${NIC} ipv4.address ${IPADDR}
-nmcli connection modify ${NIC} ipv4.gateway ${GW}
-nmcli connection modify ${NIC} ipv4.method manual
-nmcli connection modify ${NIC} ipv4.dns "192.168.1.192"
-nmcli connection modify ${NIC} ipv4.dns-search "demo.net"
-systemctl restart NetworkManager
+    # change nic settings to static
+    nmcli connection modify ${NIC} ipv4.address ${IPADDR}
+    nmcli connection modify ${NIC} ipv4.gateway ${GW}
+    nmcli connection modify ${NIC} ipv4.method manual
+    nmcli connection modify ${NIC} ipv4.dns "192.168.1.192"
+    nmcli connection modify ${NIC} ipv4.dns-search "demo.net"
+
+    # restart network manager service
+    systemctl restart NetworkManager
+
+    exit 0
+else
+    printf "Already static\n"
+    exit 0
+fi
