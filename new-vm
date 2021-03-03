@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+#: Title        : new-vm
+#: Date         : 2021-02-18
+#: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : Script creates a new virtual machine
+
+# ensure script is being executed with superuser privileges.
+if [[ "${UID}" -ne 0 ]]
+then
+    echo 'Please run with sudo privileges or as root.'
+    exit 1
+fi
+
+# Get ISO path
+read -p 'Enter full path to ISO file: ' ISO_PATH
+
+# Get the virtual machine name
+read -p 'Enter virtual machine name: ' VM_NAME
+
+# Create virtual machine function
+new_vm () {
+    printf "Creating VM ${VM_NAME}...\n"
+    virt-install \
+        --name ${VM_NAME} \
+        --os-type=Linux \
+        --os-variant=fedora33 \
+        --ram=1024 \
+        --vcpus=2 \
+        --disk path=/kvm/vms/${VM_NAME}/image/${VM_NAME}.img,size=10 \
+        --cdrom $ISO_PATH
+    }
+
+new_vm
