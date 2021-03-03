@@ -10,7 +10,7 @@
 USER=$1
 
 printf "Executing script: ${0}\n"
-for USER in ${$@}
+for USER in "$@"
 do
     printf "Archiving user: ${USER}\n"
     # Lock the account
