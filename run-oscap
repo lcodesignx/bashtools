@@ -6,8 +6,31 @@
 #: Version	: 1.0
 #: Description	: runs openscap scan with DISA STIG profile
 
-oscap xccdf eval \
-    --profile xccdf_org.ssgproject.content_profile_stig \
-    --results /home/lupera1/Temp/scap/ab1-docker-1/arf.xml \
-    --report /home/lupera1/Temp/scap/ab1-docker-1/report.html \
-    /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+function run_scap {
+    oscap xccdf eval \
+        --profile xccdf_org.ssgproject.content_profile_stig \
+        --results /home/lupera1/Temp/scap/${SYSNAME}/arf.xml \
+        --report /home/lupera1/Temp/scap/${SYSNAME}/report.html \
+        /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
+}
+
+# check if system directory exists
+function check_dir {
+    if [[ -d "/home/lupera1/Temp/scap/${SYSNAME}" ]]
+    then
+        run_scap
+    else
+        mkdir /home/lupera1/Temp/scap/$SYSNAME
+        run_scap
+    fi
+}
+
+# check if user entered system name as an argument
+if [[ -z $1 ]]
+then
+    SYSNAME=$(hostname)
+    check_dir
+else
+    SYSNAME="$1"
+    check_dir
+fi
