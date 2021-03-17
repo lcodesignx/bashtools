@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+#: Title	: run-oscap
+#: Date 	: 2021-03-17
+#: Author	: "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version	: 1.0
+#: Description	: runs openscap scan with DISA STIG profile
+
+oscap xccdf eval \
+    --profile xccdf_org.ssgproject.content_profile_stig \
+    --results /home/lupera1/Temp/scap/ab1-docker-1/arf.xml \
+    --report /home/lupera1/Temp/scap/ab1-docker-1/report.html \
+    /usr/share/xml/scap/ssg/content/ssg-rhel8-ds.xml
