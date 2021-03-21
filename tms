@@ -1,0 +1,20 @@
+#!/bin/bash
+
+TMUX_SESSIONS=$(tmux ls 2>/dev/null | wc -l)
+
+if [[ ${TMUX_SESSIONS} -eq 0 ]]
+then
+    tmux new -s dev
+elif [[ ${TMUX_SESSIONS} -eq 1 ]]
+then
+    SESSION_NAME=$(tmux ls | cut -d':' -f'1')
+    tmux attach-session -t $SESSION_NAME
+else
+    if [[ -z $1 ]]
+    then
+        printf "There are multiple tmux sessions active\n"
+        tmux ls
+    else
+        tmux attach-session -t $1
+    fi
+fi
