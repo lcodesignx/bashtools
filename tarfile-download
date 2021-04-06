@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+#: Title        : tarfile-download
+#: Date         : 2021-04-06
+#: Author       : "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : Script downloads RHEL(6-7) repo tarfiles from apllinuxdepot
+
+# ensure script is being executed with superuser privileges.
+if [[ "${UID}" -ne 0 ]]
+then
+    echo 'Please run with sudo privileges or as root.'
+    exit 1
+fi
+
+URL='https://apllinuxdepot.jhuapl.edu/linux/Red_Hat/repos/'
+REPO_FILE='/flashdrive/repolist'
+REPO_DIR='/flashdrive/repotarballs'
+
+# Clear old repotarballs 
+if [[ -d ${REPO_DIR} ]]
+then
+    rm -rf $REPO_DIR/*
+else
+    printf "Creating repo directory ($REPO_DIR)...\n"
+    mkdir $REPO_DIR
+fi
+
+# Scrape tarball links to a repolist file
+lynx -dump -listonly -nonumbers $URL | grep -Ev '5|32|dotnet|client|debug' | grep repos/rh > $REPO_FILE
+
+if [[ "${?}" -ne 0 ]]
+then
+    printf "Tarfile links were NOT added to file.\n"
+fi
+
+# Download tarballs to repository directory
+wget -i $REPO_FILE -P $REPO_DIR --no-check-certificate
+
