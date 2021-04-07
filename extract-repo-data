@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+#: Title        : tarfile-download
+#: Date         : 2021-04-06
+#: Author       :"AB1-Linux" <lupera1@jhuapl.edu>
+#: Version      : 1.0
+#: Description  : Script downloads RHEL(6-7) repo tarfiles from apllinuxdepot
+
+# ensure script is being executed with superuser privileges.
+if [[ "${UID}" -ne 0 ]]
+then
+    echo 'Please run with sudo privileges or as root.'
+    exit 1
+fi
+
+REPOS_DIR='/data/repos'
+TARBALL_DIR='/flashdrive/repotarballs'
+
+# check if repos dir exits
+if [[ -d ${REPOS_DIR} ]]
+then
+    rm -rf $REPOS_DIR/*
+else
+    printf "Creating $REPOS_DIR"
+    mkdir -p $REPOS_DIR
+fi
+
+# extract tarballs to repos directory
+for TARBALL in $TARBALL_DIR/*.tar
+do
+    tar -xf $TARBALL -C /data/repos | pv
+done 
