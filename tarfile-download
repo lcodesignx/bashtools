@@ -23,7 +23,7 @@ then
     rm -rf $REPO_DIR/*
 else
     printf "Creating repo directory ($REPO_DIR)...\n"
-    mkdir $REPO_DIR
+    mkdir -p $REPO_DIR
 fi
 
 # Scrape tarball links to a repolist file
