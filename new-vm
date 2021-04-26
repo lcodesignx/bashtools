@@ -21,6 +21,7 @@ read -p 'Enter virtual machine name: ' VM_NAME
 
 # Create virtual machine function
 new_vm () {
+    mkdir -p /kvm/vms/${VM_NAME}/image
     printf "Creating VM ${VM_NAME}...\n"
     virt-install \
         --name ${VM_NAME} \
