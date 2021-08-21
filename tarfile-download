@@ -14,6 +14,7 @@ then
 fi
 
 URL='https://apllinuxdepot.jhuapl.edu/linux/Red_Hat/repos/'
+VMREPO6_URL='http://vmrepo6/repos'
 REPO_FILE='/flashdrive/repolist'
 REPO_DIR='/flashdrive/repotarballs'
 
@@ -27,7 +28,8 @@ else
 fi
 
 # Scrape tarball links to a repolist file
-lynx -dump -listonly -nonumbers $URL | grep -Ev '5|32|dotnet|client|debug' | grep repos/rh > $REPO_FILE
+lynx -dump -listonly -nonumbers $URL | grep -Ev '5|32|dotnet|client|debug|rhel6' | grep repos/rh > $REPO_FILE
+lynx -dump -listonly -nonumbers $VMREPO6_URL | grep -i rhel6 >> $REPO_FILE
 
 if [[ "${?}" -ne 0 ]]
 then
