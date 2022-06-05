@@ -17,7 +17,7 @@ fi
 NIC=$(nmcli connection show | sed -n 2p | cut -d' ' -f1)
 PROTO=$(nmcli connection show id ${NIC} | grep -i ipv4.method)
 
-if [[ ${PROTO} == "auto" ]]
+if [[ ${PROTO} != "auto" ]]
 then
     # get current ip address and subnet mask
     IPADDR=$(ip a | grep inet | grep -v inet6 | sed -n 2p | cut -d' ' -f6)

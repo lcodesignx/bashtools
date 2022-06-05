@@ -1,0 +1,38 @@
+#!/bin/bash
+#
+#: Title	: change-ipadd
+#: Date 	: 2022-02-05
+#: Author	: "Alvaro Lupercio" <lupera1@jhuapl.edu>
+#: Version	: 1.0
+#: Description	: changes ip address
+
+# ensure script is being executed with superuser privileges.
+if [[ "${UID}" -ne 0 ]]
+then
+    echo 'Please run with sudo privileges or as root.'
+    exit 1
+fi
+
+# get network interface name and protocol
+HOSTNAME=$(hostname -s)
+NIC=$(nmcli connection show | sed -n 2p | cut -d' ' -f1)
+IP4=$(nmcli con show id "${NIC} enp0s3" | grep IP4.ADDRESS | awk '{ print $NF }')
+
+# configure network function
+function config_net {
+    printf "Configuring network ... \n"
+    nmcli conn mod "${NIC} enp0s3" ipv4.addresses ${IP4}
+    nmcli conn mod "${NIC} enp0s3" ipv4.gateway 172.16.0.1
+    nmcli conn mod "${NIC} enp0s3" ipv4.dns "75.75.75.75 75.75.76.76"
+    nmcli conn mod "${NIC} enp0s3" ipv4.method manual
+}
+
+VMS=("rocky2" "rocky3")
+for VM in ${VMS[@]}
+do
+    if [[ ${VM} -eq ${HOSTNAME} ]]
+    then
+        config_net
+        exit 0
+    fi
+done
